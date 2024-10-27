@@ -2,6 +2,56 @@ let chart; // Declarar o gráfico para reutilizá-lo
 let responsavelTesouraria = '';
 let responsavelOperacoes = '';
 let contagemTotalErros = {}; // Objeto para acumular contagem de erros
+let chart; // Declarar o gráfico para reutilizá-lo
+let responsavelTesouraria = '';
+let responsavelOperacoes = '';
+
+// Capturar a submissão do formulário
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("dataForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Se os responsáveis não forem preenchidos, capturá-los
+        if (!responsavelTesouraria) {
+            responsavelTesouraria = document.getElementById("responsavelTesouraria").value;
+        }
+        if (!responsavelOperacoes) {
+            responsavelOperacoes = document.getElementById("responsavelOperacoes").value;
+
+            // Exibir os responsáveis acima da tabela
+            document.getElementById("responsaveisDisplay").innerHTML = 
+                `<h3>Responsável Tesouraria: ${responsavelTesouraria}</h3>
+                <h3>Responsável Operações: ${responsavelOperacoes}</h3>`;
+        }
+
+        const rota = document.getElementById("rota").value;
+        const re = document.getElementById("re").value;
+        const carro = document.getElementById("carro").value;
+        const rua = document.getElementById("rua").value;
+        const horaInicial = document.getElementById("horaInicial").value;
+        const horaFinal = document.getElementById("horaFinal").value;
+        const observacoes = document.getElementById("observacoes").value;
+
+        const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+        let marcados = [];
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                marcados.push(checkbox.value);
+            }
+        });
+        const itensMarcados = marcados.join(';');
+
+        const tableBody = document.getElementById("tableBody");
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `<td>${responsavelTesouraria}</td><td>${responsavelOperacoes}</td><td>${rota}</td><td>${re}</td><td>${carro}</td><td>${rua}</td><td>${horaInicial}</td><td>${horaFinal}</td><td>${itensMarcados}</td><td>${observacoes}</td>`;
+        tableBody.appendChild(newRow);
+
+        // Atualizar o gráfico e resetar o formulário
+        atualizarGrafico(marcados);
+        document.getElementById("dataForm").reset();
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+    });
+});
 
 // Função para solicitar nomes dos responsáveis
 function solicitarResponsaveis() {
