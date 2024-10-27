@@ -12,7 +12,7 @@ document.getElementById("dataForm").addEventListener("submit", function(event) {
     }
     if (!responsavelOperacoes) {
         responsavelOperacoes = document.getElementById("responsavelOperacoes").value;
-        
+
         // Exibir os responsáveis acima da tabela
         document.getElementById("responsaveisDisplay").innerHTML = 
             `<h3>Responsável Tesouraria: ${responsavelTesouraria}</h3>
