@@ -1,23 +1,25 @@
 let chart; // Declarar o gráfico para reutilizá-lo
 let responsavelTesouraria = '';
 let responsavelOperacoes = '';
+let contagemTotalErros = {}; // Objeto para acumular contagem de erros
+
+// Função para solicitar nomes dos responsáveis
+function solicitarResponsaveis() {
+    responsavelTesouraria = prompt("Informe o nome do Responsável Tesouraria:");
+    responsavelOperacoes = prompt("Informe o nome do Responsável Operações:");
+    
+    // Exibir os responsáveis acima da tabela
+    document.getElementById("responsaveisDisplay").innerHTML = 
+        `<h3>Responsável Tesouraria: ${responsavelTesouraria}</h3>
+         <h3>Responsável Operações: ${responsavelOperacoes}</h3>`;
+}
+
+// Solicitar nomes dos responsáveis na primeira execução
+solicitarResponsaveis();
 
 // Capturar a submissão do formulário
 document.getElementById("dataForm").addEventListener("submit", function(event) {
     event.preventDefault();
-
-    // Se os responsáveis não forem preenchidos, capturá-los
-    if (!responsavelTesouraria) {
-        responsavelTesouraria = document.getElementById("responsavelTesouraria").value;
-    }
-    if (!responsavelOperacoes) {
-        responsavelOperacoes = document.getElementById("responsavelOperacoes").value;
-
-        // Exibir os responsáveis acima da tabela
-        document.getElementById("responsaveisDisplay").innerHTML = 
-            `<h3>Responsável Tesouraria: ${responsavelTesouraria}</h3>
-            <h3>Responsável Operações: ${responsavelOperacoes}</h3>`;
-    }
 
     const rota = document.getElementById("rota").value;
     const re = document.getElementById("re").value;
@@ -41,13 +43,38 @@ document.getElementById("dataForm").addEventListener("submit", function(event) {
     newRow.innerHTML = `<td>${responsavelTesouraria}</td><td>${responsavelOperacoes}</td><td>${rota}</td><td>${re}</td><td>${carro}</td><td>${rua}</td><td>${horaInicial}</td><td>${horaFinal}</td><td>${itensMarcados}</td><td>${observacoes}</td>`;
     tableBody.appendChild(newRow);
 
-    atualizarGrafico(marcados);
+    // Atualiza contagem total de erros
+    atualizarContagemErros(marcados);
+    
+    // Reseta o formulário
     document.getElementById("dataForm").reset();
     checkboxes.forEach(checkbox => checkbox.checked = false);
 });
 
+// Função para atualizar a contagem total de erros
+function atualizarContagemErros(itensMarcados) {
+    const problemas = ["Camera nao funciona", "Pino para fora", "CF fora do patio", "Bateria descarregada", "Bag atrasada"];
+
+    itensMarcados.forEach(item => {
+        if (contagemTotalErros[item]) {
+            contagemTotalErros[item]++;
+        } else {
+            contagemTotalErros[item] = 1;
+        }
+    });
+
+    // Atualiza a exibição da contagem de erros
+    let contagemExibida = `<h4>Contagem de Erros:</h4>`;
+    for (const problema of problemas) {
+        contagemExibida += `${problema}: ${contagemTotalErros[problema] || 0}<br>`;
+    }
+    document.getElementById("contagemErros").innerHTML = contagemExibida;
+
+    atualizarGrafico();
+}
+
 // Função para atualizar o gráfico
-function atualizarGrafico(itensMarcados) {
+function atualizarGrafico() {
     const problemas = ["Camera nao funciona", "Pino para fora", "CF fora do patio", "Bateria descarregada", "Bag atrasada"];
     const contagemProblemas = Array(problemas.length).fill(0);
 
@@ -102,22 +129,18 @@ function atualizarGrafico(itensMarcados) {
 // Exportar dados da tabela para um arquivo CSV
 document.getElementById("exportExcel").addEventListener("click", function() {
     const rows = document.querySelectorAll("#dataTable tr");
-    let csvContent = "Responsável Tesouraria;Responsável Operações;Rota;RE;Carro;Rua;Hora Inicial;Hora Final;Itens Marcados;Observações\n";
-
-    rows.forEach((row, index) => {
-        if (index === 0) return; // Ignorar a primeira linha (cabeçalho)
-        let rowData = [];
-        row.querySelectorAll("td").forEach(cell => {
-            rowData.push(cell.innerText);
-        });
-        csvContent += rowData.join(";") + "\n";
+    let csvContent = "Responsável Tesouraria;Responsável Operações;Rota;RE;Carro;Rua;Hora Inicial;Hora Final;Problemas;Observações\n";
+    
+    rows.forEach(row => {
+        const cols = row.querySelectorAll("td, th");
+        const dataString = Array.from(cols).map(col => col.innerText).join(";");
+        csvContent += dataString + "\n";
     });
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", "dados_excel.csv");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", "relatorio_problemas.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
