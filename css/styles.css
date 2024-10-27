@@ -1,7 +1,6 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    padding-bottom: 50px; /* Espaço na parte inferior */
 }
 
 h2 {
@@ -48,13 +47,6 @@ button:hover {
     margin-top: 10px;
 }
 
-#chartProblemas {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f1f1f1;
-    border-radius: 8px;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -76,7 +68,7 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Adicionando espaço na parte inferior */
+/* Espaço no final da página */
 body {
-    padding-bottom: 50px;
+    padding-bottom: 50px; /* Ajuste conforme necessário */
 }
