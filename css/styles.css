@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    padding-bottom: 50px; /* Espaço na parte inferior */
 }
 
 h2 {
@@ -73,4 +74,9 @@ th {
 
 tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+/* Adicionando espaço na parte inferior */
+body {
+    padding-bottom: 50px;
 }
