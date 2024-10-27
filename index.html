@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <title>Relatório de Problemas</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Adicionada a biblioteca Chart.js -->
 </head>
 <body>
     <h2>Registro de Problemas</h2>
@@ -18,6 +19,8 @@
 
     <!-- Formulário de entrada de dados -->
     <form id="dataForm">
+        <label>Responsável Tesouraria: <input type="text" id="responsavelTesouraria" required></label>
+        <label>Responsável Operações: <input type="text" id="responsavelOperacoes" required></label>
         <label>Rota: <input type="text" id="rota" required></label>
         <label>RE: <input type="text" id="re" required></label>
         <label>Carro: <input type="text" id="carro" required></label>
@@ -60,6 +63,6 @@
         <tbody id="tableBody"></tbody>
     </table>
 
-    <script src="script\script.js"></script>
+    <script src="script/script.js"></script>
 </body>
 </html>
