@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css\styles.css">
+    <title>Relatório de Problemas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h2>Registro de Problemas</h2>
+
+    <!-- Exibir responsáveis aqui -->
+    <div id="responsaveisDisplay"></div>
+    
+    <!-- Área onde a contagem de problemas será exibida -->
+    <div id="chartProblemas"></div>
+
+    <!-- Formulário de entrada de dados -->
+    <form id="dataForm">
+        <label>Rota: <input type="text" id="rota" required></label>
+        <label>RE: <input type="text" id="re" required></label>
+        <label>Carro: <input type="text" id="carro" required></label>
+        <label>Rua: <input type="text" id="rua" required></label>
+        <label>Hora Inicial: <input type="time" id="horaInicial" required></label>
+        <label>Hora Final: <input type="time" id="horaFinal" required></label>
+        <label>Observações: <textarea id="observacoes"></textarea></label>
+
+        <!-- Lista de problemas (checkboxes) -->
+        <div class="checklist">
+            <label><input type="checkbox" value="Camera nao funciona"> Camera não funciona</label>
+            <label><input type="checkbox" value="Pino para fora"> Pino para fora</label>
+            <label><input type="checkbox" value="CF fora do patio"> CF fora do pátio</label>
+            <label><input type="checkbox" value="Bateria descarregada"> Bateria descarregada</label>
+            <label><input type="checkbox" value="Bag atrasada"> Bag atrasada</label>
+        </div>
+
+        <button type="submit">Adicionar Registro</button>
+    </form>
+
+    <!-- Botão para exportar a tabela para Excel -->
+    <button id="exportExcel">Exportar para Excel</button>
+
+    <!-- Tabela para exibir registros -->
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Responsável Tesouraria</th>
+                <th>Responsável Operações</th>
+                <th>Rota</th>
+                <th>RE</th>
+                <th>Carro</th>
+                <th>Rua</th>
+                <th>Hora Inicial</th>
+                <th>Hora Final</th>
+                <th>Problemas</th>
+                <th>Observações</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <script src="script\script.js"></script>
+</body>
+</html>
